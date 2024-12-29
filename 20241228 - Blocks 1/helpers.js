@@ -24,7 +24,6 @@ find_moment_of_inertia = function () {
     );
 }
 
-
 find_total_area = function () {
     if(blocks.length==0) { return(0); }
     return(blocks.reduce(
@@ -32,6 +31,37 @@ find_total_area = function () {
             return(sum_ + block_.body.area);
         }, 0)
     );
+}
+
+find_sum_horizontal_span = function() {
+    /*
+        desc:
+        +   Finds 
+        TODO:
+        +   Could be more clever -- more of a projection
+    */
+    if(blocks.length==0) { return(0); }
+    // Push points
+    let points = [];
+    blocks.forEach(block_ => {
+        angle_ = Math.abs(Math.round(200*block_.body.angle/Math.PI)%100);
+        if(angle_ <= 1) {
+            points.push([Math.round(block_.body.bounds.min.x), Math.round(p.height - block_.body.bounds.min.y)]);
+            points.push([Math.round(block_.body.bounds.max.x), Math.round(p.height - block_.body.bounds.min.y)]);
+        }
+        else {
+            // find highest vertex
+            let highest_point = Math.min.apply(null, block_.body.vertices.map(function(v){return(v.y);}));
+            let highest_vertex = block_.body.vertices.filter(function(v){return(v.y === highest_point)})[0];
+            points.push([Math.round(highest_vertex.x), Math.round(p.height - highest_vertex.y)]);
+        }
+    });
+    points.sort(function(a,b){return(a[0]-b[0])});
+    let max_height = Math.max.apply(null, points.map(function(pt){return(pt[1])}));
+    let max_points = points.filter(function(pt){return(pt[1] === max_height)});
+    let min_x = Math.min.apply(null, max_points.map(function(pt){return(pt[0])}));
+    let max_x = Math.max.apply(null, max_points.map(function(pt){return(pt[0])}));
+    return(Math.min(120, max_x - min_x));
 }
 
 // TODO: add fitness function that measures longest available span for future building
@@ -42,6 +72,9 @@ find_total_area = function () {
 // }
 
 measure_success = function() {
-    let fitness = Math.log10(find_moment_of_inertia()) - Math.log10(find_total_area())
+    let fitness = (  3*Math.log10(find_max_height())
+                   + 1*Math.log10(find_sum_horizontal_span())
+                   + 1*Math.log10(find_moment_of_inertia()) 
+                   - 1*Math.log10(find_total_area()))
     return(Math.max(0, fitness));
 }

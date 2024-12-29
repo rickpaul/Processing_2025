@@ -43,7 +43,7 @@ var sketch = function(p) {
         //
         activeBlock = false;
         latestBlock = null;
-        GP = new GenePool(10, 4);
+        GP = new GenePool(10, 10);
         current_gene = 0;
         current_block = 0;
     }
