@@ -1,0 +1,1 @@
+"C:\ProgramData\Anaconda3\python.exe" "C:\Users\capta\Dropbox\___Current\__Processing\Processing\server.py"
