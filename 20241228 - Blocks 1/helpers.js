@@ -33,6 +33,31 @@ find_total_area = function () {
     );
 }
 
+find_base_contact_percentage = function() {
+    throw "Not implemented";
+    /*
+        desc:
+        +   Finds how much surface area is in contact with the base
+        ... as a percentage of total outside area
+    */
+}
+
+find_base_span = function() {
+    throw "Not implemented";
+    /*
+        desc:
+        +   Finds the span of the base
+    */
+}
+
+find_tilted_block_percentage = function() {
+    throw "Not implemented";
+    /*
+        desc:
+        +   Finds how many blocks are tilted
+    */
+}
+
 find_sum_horizontal_span = function() {
     /*
         desc:
@@ -72,9 +97,9 @@ find_sum_horizontal_span = function() {
 // }
 
 measure_success = function() {
-    let fitness = (  3*Math.log10(find_max_height())
-                   + 1*Math.log10(find_sum_horizontal_span())
-                   + 1*Math.log10(find_moment_of_inertia()) 
-                   - 1*Math.log10(find_total_area()))
+    let fitness = (  0.5*Math.log10(find_max_height())
+                   + 1.0*Math.log10(find_sum_horizontal_span())
+                   + 0.0*Math.log10(find_moment_of_inertia()) 
+                   - 0.0*Math.log10(find_total_area()))
     return(Math.max(0, fitness));
 }
